@@ -1,0 +1,127 @@
+<h1>Color Tint Generator</h1>
+
+<form id="pluginForm">
+
+<fieldset class="border-8">
+  <legend>Color Infornation</legend>
+
+  <p>
+    <label for="colorCode">Color</label>
+    <input type="color" id="colorCode" name="colorCode" value="#0075ff">
+  </p>
+
+  <p>
+    <label for="colorName">Color Name</label>
+    <input type="text" id="colorName" name="colorName" value="Primary">
+  </p>
+
+  <p>
+    <label for="tintNumber">Number of Tint</label>
+    <input type="number" id="tintNumber" name="tintNumber" value="10" min="1" max="10">
+  </p>
+
+
+</fieldset>
+
+<br/>
+
+<fieldset class="border-8">
+
+  <legend>Frame information</legend>
+
+   <p>
+    <label for="circleSize">Circle Size</label>
+    <input type="number" value="120" min="48" id="circleSize" name="circleSize">
+   </p>
+
+   <p>
+    <label for="circleSize">Circle Spacing</label>
+    <input type="number" value="32" min="0" id="circleSpacing" name="circleSpacing">
+   </p>
+
+   <p>
+    <label>Choose the frame orientation</label>
+
+    <br/>
+
+    <input type="radio" name="direction" id="frameH" checked>
+    <label for="frameH">Horizontal</label>
+    <br/>
+
+    <input type="radio" name="direction" id="frameV">
+    <label for="frameV">Vertical</label>
+   </p>
+
+</fieldset>
+<input type="hidden" name="frameDirection" value="horizontal">
+<br/>
+<button id="generate" class="btn-primary">Generate Tints</button>
+<button id="cancel" class="btn-secondary">Cancel</button>
+
+</form>
+
+
+<script>
+
+  document.getElementById('generate').onclick = (e) => {
+
+    //get the form
+    let pluginForm = document.querySelector('#pluginForm')
+
+    let pluginFormData = new FormData(pluginForm)
+
+    if(document.querySelector('#frameV').checked){
+      pluginFormData.set('frameDirection','vertical')
+    }
+    // create an object with form data
+    let formDataObj = {}
+
+    for (let[key,value] of pluginFormData){
+      formDataObj[key] = value
+    }
+    
+    parent.postMessage({pluginMessage: {type:'actionGenerate',formDataObj}}, '*')
+  }
+
+  document.getElementById('cancel').onclick = (e) => {
+    parent.postMessage({pluginMessage: {type:'actionExit'}}, '*')
+  }
+</script>
+
+
+
+<style>
+  .border-8{
+    border-radius: 8px;
+  }
+  .btn-primary{
+    padding: 16px;
+    background-color: #0075ff;
+    color: #fff;
+    font-size: 14px;
+    border-radius: 8px;
+    border: none;
+  }
+  .btn-primary:hover{
+    background-color: #016ae1;
+    cursor: pointer;
+  }
+
+  .btn-secondary{
+    padding: 16px;
+    background-color: #fff;
+    color: #0075ff;
+    font-size: 14px;
+    border-radius: 8px;
+    border: none;
+  }
+  .btn-secondary:hover{
+    background-color: #0077ff21;
+    cursor: pointer;
+  }
+  .omid{
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+</style>
